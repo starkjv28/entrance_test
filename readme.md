@@ -2,9 +2,8 @@
 - Api signup - ok 
 - Api signin - ok
 - Api signout - ok
-- refeshtoken - pending
+- refeshtoken - ok
 
-touch .env 
-copy content in env.txt to .env
-
-npm i && npm run server
+step 1: touch .env 
+step 2: copy content in env.txt to .env
+step 3: npm i && npm run server
