@@ -11,7 +11,7 @@ const generalAcessToken = (data) => {
 
 const generalRefreshToken = (data) => {
   // eslint-disable-next-line no-undef
-  const access_token = jwt.sign(data, process.env.SECRET_KEY, { expiresIn: '365d' })
+  const access_token = jwt.sign(data, process.env.SECRET_KEY, { expiresIn: '30d' })
   return access_token
 }
 
@@ -26,10 +26,9 @@ const refreshTokenService = (token) => {
           })
         }
         if (user) {
-          const newAcessToken = generalAcessToken({ _id: user._id })
+          const newAcessToken = generalAcessToken({ id: user.id })
           resolve({
-            status: 'OK',
-            access_token: newAcessToken
+            accessToken: newAcessToken
           })
         } else {
           resolve({

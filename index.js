@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const cors = require("cors");
+// eslint-disable-next-line no-undef
 const port = process.env.PORT || 8080
 
 const userRoutes = require('./app/routes/auth.routes')
