@@ -11,8 +11,8 @@ const generalAcessToken = (data) => {
 
 const generalRefreshToken = (data) => {
   // eslint-disable-next-line no-undef
-  const access_token = jwt.sign(data, process.env.SECRET_KEY, { expiresIn: '30d' })
-  return access_token
+  const refresh_token = jwt.sign(data, process.env.SECRET_KEY, { expiresIn: '30d' })
+  return refresh_token
 }
 
 const refreshTokenService = (token) => {
@@ -27,6 +27,7 @@ const refreshTokenService = (token) => {
         }
         if (user) {
           const newAcessToken = generalAcessToken({ id: user.id })
+          // const newRefreshToken = generalRefreshToken({ id: user.id })
           resolve({
             accessToken: newAcessToken
           })
@@ -43,22 +44,21 @@ const refreshTokenService = (token) => {
 }
 
 exports.refreshtoken = async (req, res) => {
-  // try {
-  //   const accessToken = req.headers.token.split(' ')[1]
-  //   if (accessToken) {
-  //     const response = await refreshTokenService(accessToken)
-  //     return res.json({ "accessToken": response })
-  //   } else {
-  //     return res.status(400).send({
-  //       message: 'The refreshTolken is not valid'
-  //     })
-  //   }
-  // } catch (err) {
-  //   return res.send({
-  //     status: 'err',
-  //     message: err
-  //   })
-  // }
-
-  res.status(200).send({ "accessToken": "success" })
+  try {
+    const accessToken = req.headers.token.split(' ')[1]
+    const refreshToken = req.body.refreshToken
+    if (accessToken && refreshToken) {
+      const response = await refreshTokenService(accessToken)
+      return res.status(200).send({ ...response })
+    } else {
+      return res.status(404).send({
+        message: 'The refreshTolken is not valid'
+      })
+    }
+  } catch (err) {
+    return res.status(500).send({
+      status: 'err',
+      message: err
+    })
+  }
 }
